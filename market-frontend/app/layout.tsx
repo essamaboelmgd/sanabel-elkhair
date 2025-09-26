@@ -8,8 +8,8 @@ import { AuthProvider } from "@/contexts/auth-context"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "سنابل - محل ميك أب وأكسسوارات",
-  description: "أفضل محل ميك أب وأكسسوارات حريمي مع نظام إدارة متكامل",
+  title: "سنابل الخير - سوبر ماركت",
+  description: "سوبر ماركت سنابل الخير - أفضل المواد الغذائية والمنتجات اليومية مع نظام إدارة متكامل",
     generator: 'v0.dev'
 }
 

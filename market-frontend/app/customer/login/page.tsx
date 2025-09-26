@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useAuth } from "@/contexts/auth-context"
 import { useToast } from "@/hooks/use-toast"
-import { Heart, Phone, Lock, ArrowRight, Sparkles, ArrowLeft, UserPlus, UserCheck } from "lucide-react"
+import { ShoppingBasket, Phone, Lock, ArrowRight, Leaf, ArrowLeft, UserPlus, UserCheck } from "lucide-react"
 import Link from "next/link"
 import apiClient from "@/lib/api"
 
@@ -156,14 +156,14 @@ export default function CustomerLoginPage() {
       <div className="space-y-2">
         <Label htmlFor="phone" className="text-gray-700">رقم الهاتف</Label>
         <div className="relative">
-          <Phone className="absolute right-3 top-3 h-4 w-4 text-pink-400" />
+          <Phone className="absolute right-3 top-3 h-4 w-4 text-green-500" />
           <Input
             id="phone"
             type="tel"
             placeholder="أدخلي رقم الهاتف"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="pr-10 text-center text-lg border-pink-200 focus:border-pink-400 focus:ring-pink-400"
+            className="pr-10 text-center text-lg border-green-200 focus:border-green-500 focus:ring-green-500"
             required
             minLength={10}
             maxLength={15}
@@ -171,7 +171,7 @@ export default function CustomerLoginPage() {
         </div>
       </div>
 
-      <Button type="submit" className="w-full h-12 text-lg bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700" disabled={loading}>
+      <Button type="submit" className="w-full h-12 text-lg bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800" disabled={loading}>
         {loading ? (
           <div className="flex items-center gap-2">
             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
@@ -194,21 +194,21 @@ export default function CustomerLoginPage() {
           {step === "password" ? "كلمة المرور" : "كلمة المرور الجديدة"}
         </Label>
         <div className="relative">
-          <Lock className="absolute right-3 top-3 h-4 w-4 text-pink-400" />
+          <Lock className="absolute right-3 top-3 h-4 w-4 text-green-500" />
           <Input
             id="password"
             type="password"
             placeholder={step === "password" ? "أدخلي كلمة المرور" : "أدخلي كلمة مرور جديدة"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="pr-10 text-center border-pink-200 focus:border-pink-400 focus:ring-pink-400"
+            className="pr-10 text-center border-green-200 focus:border-green-500 focus:ring-green-500"
             required
             minLength={6}
           />
         </div>
       </div>
 
-      <Button type="submit" className="w-full h-12 text-lg bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700" disabled={loading}>
+      <Button type="submit" className="w-full h-12 text-lg bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800" disabled={loading}>
         {loading ? (
           <div className="flex items-center gap-2">
             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
@@ -226,7 +226,7 @@ export default function CustomerLoginPage() {
         type="button" 
         variant="outline" 
         onClick={handleBackToPhone}
-        className="w-full border-pink-200 text-pink-600 hover:bg-pink-50"
+        className="w-full border-green-200 text-green-700 hover:bg-green-50"
       >
         <ArrowLeft className="h-4 w-4 ml-2" />
         العودة لتغيير رقم الهاتف
@@ -235,30 +235,30 @@ export default function CustomerLoginPage() {
   )
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-purple-50 to-rose-50">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-emerald-50 to-lime-50">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
             <div className="relative">
               {step === "phone" ? (
-                <Phone className="h-12 w-12 text-pink-500" />
+                <Phone className="h-12 w-12 text-green-600" />
               ) : step === "password" ? (
-                <UserCheck className="h-12 w-12 text-green-500" />
+                <UserCheck className="h-12 w-12 text-green-600" />
               ) : (
-                <UserPlus className="h-12 w-12 text-purple-500" />
+                <UserPlus className="h-12 w-12 text-green-600" />
               )}
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-purple-400 rounded-full animate-pulse"></div>
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
             </div>
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">سنابل</h1>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-700 bg-clip-text text-transparent">سنابل الخير</h1>
           <p className="text-gray-600">
-            {step === "phone" && "تسجيل دخول العميلة"}
-            {step === "password" && `مرحباً ${customerName || "عميلتنا العزيزة"}`}
-            {step === "new-password" && `مرحباً ${customerName || "عميلتنا العزيزة"}`}
+            {step === "phone" && "تسجيل دخول العميل"}
+            {step === "password" && `مرحباً ${customerName || "عميلنا العزيز"}`}
+            {step === "new-password" && `مرحباً ${customerName || "عميلنا العزيز"}`}
           </p>
         </div>
 
-        <Card className="shadow-xl border-pink-100 bg-gradient-to-br from-white to-pink-50">
+        <Card className="shadow-xl border-green-100 bg-gradient-to-br from-white to-green-50">
           <CardHeader>
             <CardTitle className="text-center text-xl text-gray-800">
               {step === "phone" && "أدخلي رقم الهاتف"}
@@ -266,7 +266,7 @@ export default function CustomerLoginPage() {
               {step === "new-password" && "أنشئي كلمة مرور جديدة"}
             </CardTitle>
             <CardDescription className="text-center text-gray-600">
-              {step === "phone" && "سنقوم بالتحقق من أنك عميلة مسجلة معنا"}
+              {step === "phone" && "سنقوم بالتحقق من أنك عميل مسجل معنا"}
               {step === "password" && "أدخلي كلمة المرور الخاصة بك للوصول إلى حسابك"}
               {step === "new-password" && "أدخلي كلمة مرور قوية لحماية حسابك"}
             </CardDescription>
@@ -276,13 +276,13 @@ export default function CustomerLoginPage() {
 
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600 mb-3">
-                ليس لديك حساب؟ تواصلي مع الإدارة لإنشاء حساب جديد
+                ليس لديك حساب؟ تواصل مع الإدارة لإنشاء حساب جديد
               </p>
               <Link 
                 href="/" 
-                className="inline-flex items-center gap-2 text-sm text-pink-600 hover:text-pink-800 transition-colors"
+                className="inline-flex items-center gap-2 text-sm text-green-600 hover:text-green-800 transition-colors"
               >
-                <Sparkles className="h-4 w-4" />
+                <Leaf className="h-4 w-4" />
                 العودة للصفحة الرئيسية
               </Link>
             </div>

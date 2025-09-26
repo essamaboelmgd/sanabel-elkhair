@@ -45,7 +45,7 @@ export default function CustomerLayout({
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="h-8 w-8 animate-spin text-pink-600" />
+          <Loader2 className="h-8 w-8 animate-spin text-green-600" />
           <p className="text-gray-600">جاري التحقق من الصلاحيات...</p>
         </div>
       </div>
@@ -63,7 +63,7 @@ export default function CustomerLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-rose-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-lime-50">
       {children}
     </div>
   )

@@ -6,7 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { BarChart3, Package, Receipt, Users, Settings, LogOut, User, ShoppingCart, ChevronUp, Crown, Sparkles } from 'lucide-react'
+import { BarChart3, Package, Receipt, Users, Settings, LogOut, User, ShoppingCart, ChevronUp, Crown, Leaf } from 'lucide-react'
 
 const menuItems = [
   {
@@ -54,14 +54,14 @@ function AdminSidebar() {
   return (
     <div className="w-64 bg-white border-l border-gray-200 flex flex-col h-full">
       {/* Header */}
-      <div className="border-b border-pink-100 bg-gradient-to-br from-pink-50 to-purple-50">
+      <div className="border-b border-green-100 bg-gradient-to-br from-green-50 to-emerald-50">
         <div className="flex items-center gap-3 px-6 py-4">
-          <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl shadow-lg">
-            <Sparkles className="h-6 w-6 text-white" />
+          <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-green-600 to-emerald-700 rounded-xl shadow-lg">
+            <Leaf className="h-6 w-6 text-white" />
           </div>
           <div className="text-right">
-            <h2 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">سنابل</h2>
-            <p className="text-sm text-pink-600 font-medium">لوحة الإدارة</p>
+            <h2 className="text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-700 bg-clip-text text-transparent">سنابل الخير</h2>
+            <p className="text-sm text-green-700 font-medium">لوحة الإدارة</p>
           </div>
         </div>
       </div>
@@ -83,8 +83,8 @@ function AdminSidebar() {
                 className={`
                   w-full justify-start gap-3 px-3 py-3 rounded-xl transition-all duration-200
                   ${isActive 
-                    ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg hover:from-blue-600 hover:to-indigo-600' 
-                    : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+                    ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg hover:from-green-700 hover:to-emerald-700' 
+                    : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
                   }
                 `}
                 asChild
@@ -96,7 +96,7 @@ function AdminSidebar() {
                       <Badge 
                         variant="secondary" 
                         className={`text-xs px-2 py-1 ${
-                          isActive ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-600'
+                          isActive ? 'bg-white/20 text-white' : 'bg-green-100 text-green-700'
                         }`}
                       >
                         {item.badge}
@@ -120,10 +120,10 @@ function AdminSidebar() {
               <div className="flex items-center gap-3">
                 <div className="text-right">
                   <p className="text-sm font-medium text-gray-900">{user?.name || "المدير"}</p>
-                  <p className="text-xs text-pink-600">مدير محل سنابل</p>
+                  <p className="text-xs text-green-700">مدير سوبر ماركت سنابل الخير</p>
                 </div>
-                <Avatar className="h-10 w-10 border-2 border-blue-200">
-                  <AvatarFallback className="bg-gradient-to-br from-blue-500 to-indigo-500 text-white font-semibold">
+                <Avatar className="h-10 w-10 border-2 border-green-200">
+                  <AvatarFallback className="bg-gradient-to-br from-green-600 to-emerald-600 text-white font-semibold">
                     <Crown className="h-5 w-5" />
                   </AvatarFallback>
                 </Avatar>
