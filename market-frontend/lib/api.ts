@@ -62,22 +62,22 @@ class ApiClient {
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
         
-                 // If unauthorized, clear token and redirect to login
-         if (response.status === 401) {
-           this.clearToken()
-           if (typeof window !== 'undefined') {
-             localStorage.removeItem('user_data')
-             // Redirect to appropriate login page based on current path
-             const currentPath = window.location.pathname
-             if (currentPath.startsWith('/admin')) {
-               window.location.href = '/admin/login'
-             } else if (currentPath.startsWith('/customer')) {
-               window.location.href = '/customer/login'
-             } else {
-               window.location.href = '/'
-             }
-           }
-         }
+        // If unauthorized, clear token and redirect to login
+        if (response.status === 401) {
+          this.clearToken()
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('user_data')
+            // Redirect to appropriate login page based on current path
+            const currentPath = window.location.pathname
+            if (currentPath.startsWith('/admin')) {
+              window.location.href = '/admin/login'
+            } else if (currentPath.startsWith('/customer')) {
+              window.location.href = '/customer/login'
+            } else {
+              window.location.href = '/'
+            }
+          }
+        }
         
         throw new Error(errorData.detail || `HTTP error! status: ${response.status}`)
       }

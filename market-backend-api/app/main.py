@@ -35,7 +35,19 @@ app.add_middleware(
 @app.on_event("startup")
 async def startup_db_client():
     from app.config import MONGO_URL, DB_NAME
-    app.state.mongo_client = AsyncIOMotorClient(MONGO_URL)
+    import ssl
+    
+    # SSL context configuration
+    ssl_context = ssl.create_default_context()
+    ssl_context.check_hostname = False
+    ssl_context.verify_mode = ssl.CERT_NONE
+    
+    app.state.mongo_client = AsyncIOMotorClient(
+        MONGO_URL,
+        tlsAllowInvalidCertificates=True,
+        tlsAllowInvalidHostnames=True,
+        ssl_context=ssl_context
+    )
     app.state.db = app.state.mongo_client[DB_NAME]
     print(f"✅ Connected to MongoDB: {MONGO_URL}")
     print(f"✅ Database: {DB_NAME}")

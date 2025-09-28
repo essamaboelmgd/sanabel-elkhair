@@ -134,29 +134,22 @@ export default function EditCustomerPage() {
     }
   }
 
-  const handlePasswordChange = async () => {
-    if (!newPassword || !confirmPassword) {
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!newPassword || newPassword.length < 8) {
       toast({
         title: "خطأ",
-        description: "يرجى إدخال كلمة السر وتأكيدها",
+        description: "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
         variant: "destructive",
       })
       return
     }
-
+    
     if (newPassword !== confirmPassword) {
       toast({
         title: "خطأ",
-        description: "كلمة السر غير متطابقة",
-        variant: "destructive",
-      })
-      return
-    }
-
-    if (newPassword.length < 8) {
-      toast({
-        title: "خطأ",
-        description: "كلمة السر يجب أن تكون 8 أحرف على الأقل",
+        description: "كلمات المرور غير متطابقة",
         variant: "destructive",
       })
       return
@@ -363,6 +356,7 @@ export default function EditCustomerPage() {
                           value={newPassword}
                           onChange={(e) => setNewPassword(e.target.value)}
                           className="pr-10"
+                          minLength={8}
                         />
                         <Button
                           type="button"
@@ -378,7 +372,7 @@ export default function EditCustomerPage() {
                           )}
                         </Button>
                       </div>
-                      <p className="text-xs text-gray-500">يجب أن تكون 6 أحرف على الأقل</p>
+                      <p className="text-xs text-gray-500">يجب أن تكون 8 أحرف على الأقل</p>
                     </div>
 
                     <div className="space-y-2">
@@ -391,6 +385,7 @@ export default function EditCustomerPage() {
                           value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}
                           className="pr-10"
+                          minLength={8}
                         />
                         <Button
                           type="button"
@@ -406,6 +401,7 @@ export default function EditCustomerPage() {
                           )}
                         </Button>
                       </div>
+                      <p className="text-xs text-gray-500">يجب أن تكون 8 أحرف على الأقل</p>
                     </div>
                   </div>
 

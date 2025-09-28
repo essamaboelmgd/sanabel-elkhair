@@ -28,8 +28,9 @@ class UserCreate(UserBase):
     
     @validator('password')
     def validate_password(cls, v):
-        if len(v) < 6:
-            raise ValueError('Password must be at least 6 characters long')
+        if len(v) < 8:
+            raise ValueError('Password must be at least 8 characters long')
+        # Allow passwords of any size (handled by the AuthService)
         return v
 
 
@@ -38,6 +39,11 @@ class UserLogin(BaseModel):
     phone: str
     password: str
     role: UserRole
+    
+    @validator('password')
+    def validate_password_length(cls, v):
+        # No length restrictions for login (will be handled by AuthService)
+        return v
 
 
 class UserResponse(UserBase):
@@ -69,8 +75,9 @@ class PasswordChange(BaseModel):
     
     @validator('new_password')
     def validate_password(cls, v):
-        if len(v) < 6:
-            raise ValueError('Password must be at least 6 characters long')
+        if len(v) < 8:
+            raise ValueError('Password must be at least 8 characters long')
+        # Allow passwords of any size (handled by the AuthService)
         return v
 
 
@@ -86,8 +93,9 @@ class CustomerPasswordSet(BaseModel):
     
     @validator('password')
     def validate_password(cls, v):
-        if len(v) < 6:
-            raise ValueError('Password must be at least 6 characters long')
+        if len(v) < 8:
+            raise ValueError('Password must be at least 8 characters long')
+        # Allow passwords of any size (handled by the AuthService)
         return v
 
 
@@ -98,6 +106,7 @@ class CustomerPasswordSetById(BaseModel):
     
     @validator('password')
     def validate_password(cls, v):
-        if len(v) < 6:
-            raise ValueError('Password must be at least 6 characters long')
+        if len(v) < 8:
+            raise ValueError('Password must be at least 8 characters long')
+        # Allow passwords of any size (handled by the AuthService)
         return v

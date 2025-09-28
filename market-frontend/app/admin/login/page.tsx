@@ -17,6 +17,7 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [role, setRole] = useState<"admin" | "cashier">("admin")
+  const [passwordError, setPasswordError] = useState("")
 
   const { login } = useAuth()
   const { toast } = useToast()
@@ -24,6 +25,19 @@ export default function AdminLoginPage() {
 
   const handleAdminLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Check password length (minimum 8 characters)
+    if (password.length < 8) {
+      setPasswordError("كلمة المرور يجب أن تكون 8 أحرف على الأقل")
+      toast({
+        title: "خطأ في كلمة المرور",
+        description: "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+        variant: "destructive",
+      })
+      return
+    }
+    
+    setPasswordError("")
     setLoading(true)
 
     try {
@@ -45,10 +59,11 @@ export default function AdminLoginPage() {
           variant: "destructive",
         })
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Login error:', error)
       toast({
         title: "خطأ",
-        description: "حدث خطأ أثناء تسجيل الدخول",
+        description: error.message || "حدث خطأ أثناء تسجيل الدخول",
         variant: "destructive",
       })
     } finally {
@@ -122,12 +137,20 @@ export default function AdminLoginPage() {
                     type="password"
                     placeholder="أدخل كلمة المرور"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="pr-10 text-center border-green-200 focus:border-green-500 focus:ring-green-500"
+                    onChange={(e) => {
+                      setPassword(e.target.value)
+                      // Clear error when user types
+                      if (passwordError) setPasswordError("")
+                    }}
+                    className={`pr-10 text-center border-green-200 focus:border-green-500 focus:ring-green-500 ${passwordError ? "border-red-500" : ""}`}
                     required
-                    minLength={6}
+                    minLength={8}
                   />
                 </div>
+                {passwordError && (
+                  <p className="text-sm text-red-500">{passwordError}</p>
+                )}
+                <p className="text-xs text-gray-500">يجب أن تكون 8 أحرف على الأقل</p>
               </div>
 
               <Button type="submit" className="w-full h-12 text-lg bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800" disabled={loading}>

@@ -40,10 +40,22 @@ class PyObjectId(ObjectId):
 
 # Database connection settings
 MONGODB_URI = os.getenv("MONGO_URL")
-MONGO_DB_NAME = os.getenv("DB_NAME", "sanabel")
+MONGO_DB_NAME = os.getenv("DB_NAME", "sanabel_elkhair")
 
 try:
-    client = AsyncIOMotorClient(MONGODB_URI)
+    import ssl
+    
+    # SSL context configuration for Windows compatibility
+    ssl_context = ssl.create_default_context()
+    ssl_context.check_hostname = False
+    ssl_context.verify_mode = ssl.CERT_NONE
+    
+    client = AsyncIOMotorClient(
+        MONGODB_URI,
+        tlsAllowInvalidCertificates=True,
+        tlsAllowInvalidHostnames=True,
+        ssl_context=ssl_context
+    )
     db = client[MONGO_DB_NAME]
     print(f"✅ Database connection initialized: {MONGO_DB_NAME}")
 except Exception as e:

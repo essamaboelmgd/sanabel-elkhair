@@ -4,6 +4,7 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from fastapi import HTTPException, status
 from bson import ObjectId
+import hashlib
 
 from app.database.connection import db
 from app.auth.models import User, UserRole, UserCreate, UserLogin, TokenData
@@ -20,12 +21,27 @@ class AuthService:
     """Authentication service class."""
 
     @staticmethod
+    def _hash_password_for_bcrypt(password: str) -> str:
+        """Hash long passwords to fit within bcrypt's 72-byte limit."""
+        password_bytes = password.encode('utf-8')
+        if len(password_bytes) <= 72:
+            return password
+        # For passwords longer than 72 bytes, hash them first to fit within the limit
+        # This preserves the entropy while ensuring compatibility with bcrypt
+        hashed = hashlib.sha256(password_bytes).hexdigest()
+        return hashed
+
+    @staticmethod
     def verify_password(plain_password: str, hashed_password: str) -> bool:
-        return pwd_context.verify(plain_password, hashed_password)
+        # Process password to fit within bcrypt's limits
+        processed_password = AuthService._hash_password_for_bcrypt(plain_password)
+        return pwd_context.verify(processed_password, hashed_password)
 
     @staticmethod
     def get_password_hash(password: str) -> str:
-        return pwd_context.hash(password)
+        # Process password to fit within bcrypt's limits
+        processed_password = AuthService._hash_password_for_bcrypt(password)
+        return pwd_context.hash(processed_password)
 
     @staticmethod
     def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:

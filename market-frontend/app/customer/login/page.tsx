@@ -14,13 +14,15 @@ import Link from "next/link"
 import apiClient from "@/lib/api"
 
 export default function CustomerLoginPage() {
-  const [step, setStep] = useState<"phone" | "password" | "new-password">("phone")
   const [phone, setPhone] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
+  const [step, setStep] = useState<"phone" | "password" | "new-password">("phone")
   const [customerExists, setCustomerExists] = useState(false)
-  const [customerName, setCustomerName] = useState("")
   const [isFirstLogin, setIsFirstLogin] = useState(false)
+  const [customerName, setCustomerName] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [passwordError, setPasswordError] = useState("")
 
   const { login } = useAuth()
   const { toast } = useToast()
@@ -28,15 +30,6 @@ export default function CustomerLoginPage() {
 
   const handlePhoneSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!phone || phone.length < 10) {
-      toast({
-        title: "خطأ",
-        description: "يرجى إدخال رقم هاتف صحيح",
-        variant: "destructive",
-      })
-      return
-    }
-
     setLoading(true)
     try {
       // التحقق من وجود العميل
@@ -83,16 +76,20 @@ export default function CustomerLoginPage() {
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!password || password.length < 6) {
+    
+    // Check password length (minimum 8 characters)
+    if (!password || password.length < 8) {
       toast({
         title: "خطأ",
-        description: "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
+        description: "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
         variant: "destructive",
       })
       return
     }
 
     setLoading(true)
+    setPasswordError("")
+
     try {
       if (step === "password") {
         // تسجيل دخول العميل الموجود
@@ -112,6 +109,16 @@ export default function CustomerLoginPage() {
         }
       } else if (step === "new-password") {
         // إنشاء كلمة مرور جديدة للعميل (first login أو عميل جديد)
+        // Check if passwords match
+        if (password !== confirmPassword) {
+          toast({
+            title: "خطأ",
+            description: "كلمات المرور غير متطابقة",
+            variant: "destructive",
+          })
+          return
+        }
+        
         const result = await apiClient.setCustomerPasswordByPhone(phone, password) as any
         if (result.success) {
           toast({
@@ -124,18 +131,20 @@ export default function CustomerLoginPage() {
           setCustomerName(result.customer_name || "")
           setStep("password")
           setPassword("")
+          setConfirmPassword("")
         } else {
           toast({
             title: "خطأ",
-            description: "فشل في إنشاء كلمة المرور",
+            description: result.error || "حدث خطأ أثناء إنشاء كلمة المرور",
             variant: "destructive",
           })
         }
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Login error:', error)
       toast({
         title: "خطأ",
-        description: "حدث خطأ أثناء العملية. تأكد من صحة البيانات.",
+        description: error.message || "حدث خطأ أثناء تسجيل الدخول",
         variant: "destructive",
       })
     } finally {
@@ -200,13 +209,40 @@ export default function CustomerLoginPage() {
             type="password"
             placeholder={step === "password" ? "أدخلي كلمة المرور" : "أدخلي كلمة مرور جديدة"}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="pr-10 text-center border-green-200 focus:border-green-500 focus:ring-green-500"
+            onChange={(e) => {
+              setPassword(e.target.value)
+              // Clear error when user types
+              if (passwordError) setPasswordError("")
+            }}
+            className={`pr-10 text-center border-green-200 focus:border-green-500 focus:ring-green-500 ${passwordError ? "border-red-500" : ""}`}
             required
-            minLength={6}
+            minLength={8}
           />
         </div>
+        {passwordError && (
+          <p className="text-sm text-red-500 text-center">{passwordError}</p>
+        )}
+        <p className="text-xs text-gray-500 text-center">يجب أن تكون 8 أحرف على الأقل</p>
       </div>
+
+      {step === "new-password" && (
+        <div className="space-y-2">
+          <Label htmlFor="confirmPassword" className="text-gray-700">تأكيد كلمة السر *</Label>
+          <div className="relative">
+            <Input
+              id="confirmPassword"
+              type="password"
+              placeholder="أعد إدخال كلمة السر الجديدة"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="pr-10 text-center border-green-200 focus:border-green-500 focus:ring-green-500"
+              required
+              minLength={8}
+            />
+          </div>
+          <p className="text-xs text-gray-500 text-center">يجب أن تكون 8 أحرف على الأقل</p>
+        </div>
+      )}
 
       <Button type="submit" className="w-full h-12 text-lg bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800" disabled={loading}>
         {loading ? (
