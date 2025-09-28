@@ -33,15 +33,31 @@ class AuthService:
 
     @staticmethod
     def verify_password(plain_password: str, hashed_password: str) -> bool:
-        # Process password to fit within bcrypt's limits
-        processed_password = AuthService._hash_password_for_bcrypt(plain_password)
-        return pwd_context.verify(processed_password, hashed_password)
+        try:
+            # Process password to fit within bcrypt's limits
+            processed_password = AuthService._hash_password_for_bcrypt(plain_password)
+            return pwd_context.verify(processed_password, hashed_password)
+        except ValueError as e:
+            # Handle bcrypt's 72-byte limit error
+            if "72 bytes" in str(e):
+                # Hash the password and try again
+                processed_password = AuthService._hash_password_for_bcrypt(plain_password)
+                return pwd_context.verify(processed_password, hashed_password)
+            raise e
 
     @staticmethod
     def get_password_hash(password: str) -> str:
-        # Process password to fit within bcrypt's limits
-        processed_password = AuthService._hash_password_for_bcrypt(password)
-        return pwd_context.hash(processed_password)
+        try:
+            # Process password to fit within bcrypt's limits
+            processed_password = AuthService._hash_password_for_bcrypt(password)
+            return pwd_context.hash(processed_password)
+        except ValueError as e:
+            # Handle bcrypt's 72-byte limit error
+            if "72 bytes" in str(e):
+                # Hash the password and try again
+                processed_password = AuthService._hash_password_for_bcrypt(password)
+                return pwd_context.hash(processed_password)
+            raise e
 
     @staticmethod
     def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
